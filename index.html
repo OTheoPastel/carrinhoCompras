@@ -68,9 +68,12 @@
     </div>
 
     <script>
+        // EventListener 1
+        // é carregado quando o DOM está completamente carregado
         document.addEventListener('DOMContentLoaded', carregarItens);
 
         function carregarItens() {
+            // pega o "compras"
             const lista = JSON.parse(localStorage.getItem('compras')) || [];
             lista.forEach(item => criarItemNaLista(item));
         }
@@ -120,19 +123,24 @@
         }
 
         function salvarItem(item) {
+            // pega o "compras"
             const lista = JSON.parse(localStorage.getItem('compras')) || [];
             lista.push(item);
+            // define o "compras"
             localStorage.setItem('compras', JSON.stringify(lista));
         }
 
         function removerItem(id) {
+            // pega o "compras"
             let lista = JSON.parse(localStorage.getItem('compras')) || [];
             lista = lista.filter(item => item.id !== id);
+            // define o "compras"
             localStorage.setItem('compras', JSON.stringify(lista));
             document.querySelector(`[data-id="${id}"]`).remove();
         }
 
         function editarItem(id) {
+            // pega o "compras"
             let lista = JSON.parse(localStorage.getItem('compras')) || [];
             const item = lista.find(item => item.id === id);
 
@@ -145,7 +153,7 @@
             item.nome = novoNome;
             item.qtd = novaQtd;
             item.categoria = novaCategoria;
-
+            // define o "compras"
             localStorage.setItem('compras', JSON.stringify(lista));
             atualizarListaVisual();
         }
@@ -158,6 +166,7 @@
 
         function limparLista() {
             if (confirm('Tem certeza que deseja apagar toda a lista?')) {
+                // remove o "compras"
                 localStorage.removeItem('compras');
                 document.getElementById('listaCompras').innerHTML = '';
             }
