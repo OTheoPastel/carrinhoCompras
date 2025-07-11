@@ -40,19 +40,28 @@
         <h1 class="text-center mb-4">🛒 Lista de Compras</h1>
 
         <div class="row mb-3 g-2">
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <input type="text" id="itemNome" class="form-control" placeholder="Item (ex: Arroz)">
             </div>
             <div class="col-md-3">
                 <input type="number" id="itemQtd" class="form-control" placeholder="Qtd (ex: 2)">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <select id="itemCategoria" class="form-select">
                     <option selected disabled>Categoria</option>
                     <option>Alimentos</option>
                     <option>Bebidas</option>
                     <option>Limpeza</option>
                     <option>Outros</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select id="itemCor" class="form-select">
+                    <option selected disabled>Cor</option>
+                    <option>Azul</option>
+                    <option>Vermelho</option>
+                    <option>Branco</option>
+                    <option>Verde</option>
                 </select>
             </div>
             <div class="col-md-1 d-grid">
@@ -82,10 +91,11 @@
             const nome = document.getElementById('itemNome').value.trim();
             const qtd = document.getElementById('itemQtd').value.trim();
             const categoria = document.getElementById('itemCategoria').value;
+            const cor = document.getElementById('itemCor').value;
 
-            if (!nome || !qtd || categoria === 'Categoria') return;
+            if (!nome || !qtd || categoria === 'Categoria' || cor === 'Cor') return;
 
-            const item = { id: Date.now(), nome, qtd, categoria };
+            const item = { id: Date.now(), nome, qtd, categoria, cor };
             salvarItem(item);
             criarItemNaLista(item);
             limparCampos();
@@ -97,9 +107,10 @@
             li.className = 'list-group-item';
             li.dataset.id = item.id;
 
+
             const span = document.createElement('span');
             span.className = 'item-info';
-            span.innerHTML = `${item.nome} <span class="badge bg-secondary">${item.qtd}x</span> <span class="badge bg-info">${item.categoria}</span>`;
+            span.innerHTML = `${item.nome} <span class="badge bg-secondary">${item.qtd}x</span> <span class="badge bg-info">${item.categoria}</span> <span class="badge bg-info">${item.cor}</span>`;
 
             const editarBtn = document.createElement('button');
             editarBtn.className = 'btn btn-warning btn-sm';
@@ -147,12 +158,14 @@
             const novoNome = prompt('Editar nome:', item.nome);
             const novaQtd = prompt('Editar quantidade:', item.qtd);
             const novaCategoria = prompt('Editar categoria:', item.categoria);
+            const novaCor = prompt('Editar cor', item.cor);
 
-            if (!novoNome || !novaQtd || !novaCategoria) return;
+            if (!novoNome || !novaQtd || !novaCategoria || !novaCor) return;
 
             item.nome = novoNome;
             item.qtd = novaQtd;
             item.categoria = novaCategoria;
+            item.cor = novaCor;
             // define o "compras"
             localStorage.setItem('compras', JSON.stringify(lista));
             atualizarListaVisual();
@@ -162,6 +175,7 @@
             document.getElementById('itemNome').value = '';
             document.getElementById('itemQtd').value = '';
             document.getElementById('itemCategoria').selectedIndex = 0;
+            document.getElementById('itemCor').selectedIndex = 0;
         }
 
         function limparLista() {
